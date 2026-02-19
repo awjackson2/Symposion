@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/symposion/schemas/message.schema.json",
+  "title": "SymposionMessage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sender",
+    "recipient",
+    "task_id",
+    "intent",
+    "content",
+    "goal_reference",
+    "urgency",
+    "timestamp"
+  ],
+  "properties": {
+    "sender": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recipient": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content": {
+      "type": "string"
+    },
+    "goal_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "NORMAL",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "default": "NORMAL"
+    },
+    "timestamp": {
+      "type": "number",
+      "description": "Unix epoch seconds (float)"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  }
+}

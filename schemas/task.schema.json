@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/symposion/schemas/task.schema.json",
+  "title": "SymposionTask",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "goal_reference",
+    "title",
+    "status"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "goal_reference": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "NEW",
+        "PLANNED",
+        "BUILDING",
+        "EVALUATING",
+        "REVISING",
+        "DONE",
+        "BLOCKED"
+      ],
+      "default": "NEW"
+    },
+    "assigned_to": {
+      "type": "string",
+      "default": ""
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "default": []
+    }
+  }
+}
