@@ -180,6 +180,5 @@ To add a new intent:
 
 ## See Also
 
-- [Architecture Overview](architecture.md)
-- [Action Pipelines](action-pipelines.md)
+- [Architecture Overview (parent page)](architecture.md)
 - [Message Schema](../schemas/message.schema.json)
