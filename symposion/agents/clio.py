@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List
 from ..models import Message
+from ..protocol.intent import Intent
 
 class ClioAgent:
     """Clio narrates final results for humans."""
@@ -23,7 +24,7 @@ class ClioAgent:
             sender=self.name,
             recipient="HUMAN",
             task_id=msg.task_id,
-            intent="FINAL_REPORT",
+            intent=Intent.FINAL_REPORT.value,
             content=report,
             goal_reference=msg.goal_reference,
             urgency=msg.urgency

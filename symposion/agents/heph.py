@@ -1,13 +1,14 @@
 from __future__ import annotations
 from typing import List
 from ..models import Message
+from ..protocol.intent import Intent
 
 class HephAgent:
     """Heph builds artifacts. In v0 it creates a draft, then a revised artifact when requested."""
     name = "HEPH"
 
     def handle(self, msg: Message) -> List[Message]:
-        if msg.intent == "REVISION_REQUEST":
+        if msg.intent == Intent.REVISION_REQUEST.value:
             artifact = (
                 "ARTIFACT (REVISED):\n"
                 "Roadmap (Short + Structured)\n"
@@ -27,7 +28,7 @@ class HephAgent:
                 sender=self.name,
                 recipient="NEM",
                 task_id=msg.task_id,
-                intent="ARTIFACT_BUILT",
+                intent=Intent.ARTIFACT_BUILT.value,
                 content=artifact,
                 goal_reference=msg.goal_reference,
                 urgency=msg.urgency,
@@ -45,7 +46,7 @@ class HephAgent:
             sender=self.name,
             recipient="NEM",
             task_id=msg.task_id,
-            intent="ARTIFACT_BUILT",
+            intent=Intent.ARTIFACT_BUILT.value,
             content=artifact,
             goal_reference=msg.goal_reference,
             urgency=msg.urgency,

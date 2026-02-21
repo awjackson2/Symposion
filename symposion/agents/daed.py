@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List
 from ..models import Message
+from ..protocol.intent import Intent
 
 class DaedAgent:
     name = "DAED"
@@ -14,24 +15,24 @@ class DaedAgent:
         )
 
         # Only trigger research on structured goal
-        if msg.intent == "STRUCTURED_GOAL":
+        if msg.intent == Intent.STRUCTURED_GOAL.value:
             return [Message(
                 sender=self.name,
                 recipient="ATHEN",
                 task_id=msg.task_id,
-                intent="RESEARCH_REQUEST",
+                intent=Intent.RESEARCH_REQUEST.value,
                 content=msg.content,
                 goal_reference=msg.goal_reference,
                 urgency=msg.urgency
             )]
 
         # Only trigger build after context arrives
-        if msg.intent == "CONTEXT_BRIEF":
+        if msg.intent == Intent.CONTEXT_BRIEF.value:
             return [Message(
                 sender=self.name,
                 recipient="HEPH",
                 task_id=msg.task_id,
-                intent="BUILD_TASK",
+                intent=Intent.BUILD_TASK.value,
                 content=plan + "\n" + msg.content,
                 goal_reference=msg.goal_reference,
                 urgency=msg.urgency,

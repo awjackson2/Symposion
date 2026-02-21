@@ -7,6 +7,7 @@ from symposion.utils.logging import JsonlLogger
 from symposion.core.registry import AgentRegistry
 from symposion.core.messaging import MessageBus
 from symposion.core.orchestrator import Orchestrator
+from symposion.protocol.intent import Intent
 
 from symposion.agents import HermAgent, DaedAgent, AthenAgent, MetAgent, HephAgent, NemAgent, ClioAgent
 
@@ -41,7 +42,7 @@ def main() -> None:
         sender="HUMAN",
         recipient="HERM",
         task_id=task_id,
-        intent="NEW_GOAL",
+        intent=Intent.NEW_GOAL.value,
         content="Create a short, structured roadmap for Symposion and explain how Nem enforces quality.",
         goal_reference=goal_ref,
         urgency="NORMAL",

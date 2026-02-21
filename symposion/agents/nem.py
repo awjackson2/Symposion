@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List
 from ..models import Message
+from ..protocol.intent import Intent
 
 class NemAgent:
     """Nem judges Heph outputs for quality + goal alignment."""
@@ -24,7 +25,7 @@ class NemAgent:
                 sender=self.name,
                 recipient="HEPH",
                 task_id=msg.task_id,
-                intent="REVISION_REQUEST",
+                intent=Intent.REVISION_REQUEST.value,
                 content=feedback,
                 goal_reference=msg.goal_reference,
                 urgency=msg.urgency,
@@ -40,7 +41,7 @@ class NemAgent:
             sender=self.name,
             recipient="CLIO",
             task_id=msg.task_id,
-            intent="APPROVED_OUTPUT",
+            intent=Intent.APPROVED_OUTPUT.value,
             content=verdict + "\n" + msg.content,
             goal_reference=msg.goal_reference,
             urgency=msg.urgency
