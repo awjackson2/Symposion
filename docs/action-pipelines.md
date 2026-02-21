@@ -286,6 +286,7 @@ Extend `pytest.yml` with additional steps:
 
 ## See Also
 
-- [Architecture Overview (parent page)](architecture.md)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- **Parent:** [Architecture](./architecture.md)
+- **Sibling:** [Intent Taxonomy](./intent-taxonomy.md)
+- **External:** [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
