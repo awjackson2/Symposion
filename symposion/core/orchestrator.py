@@ -1,19 +1,30 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+import os
 from typing import Dict, List
 from ..models import Message
 from .registry import AgentRegistry
 from .messaging import MessageBus
 from ..utils.logging import JsonlLogger
+from ..protocol.intent import Intent
+from ..protocol.validate import ProtocolViolation, validate_intent
 
 class Orchestrator:
     """Routes messages to agents and enforces the Nemesis gate."""
 
-    def __init__(self, registry: AgentRegistry, bus: MessageBus, logger: JsonlLogger):
+    def __init__(
+        self,
+        registry: AgentRegistry,
+        bus: MessageBus,
+        logger: JsonlLogger,
+        strict_protocol: bool = False,
+    ):
         self.registry = registry
         self.bus = bus
         self.logger = logger
+        strict_env = os.environ.get("SYMPOSION_STRICT_PROTOCOL", "").strip().lower()
+        self.strict_protocol = strict_protocol or strict_env in {"1", "true", "yes", "on"}
         self.task_state: Dict[str, Dict] = {}  # keyed by task_id
         self.completed_tasks: set[str] = set()
 
@@ -22,7 +33,7 @@ class Orchestrator:
 
     def run(self, max_steps: int = 200) -> None:
         def is_final_report(m: Message) -> bool:
-            return m.sender == "CLIO" and m.recipient == "HUMAN" and m.intent == "FINAL_REPORT"
+            return m.sender == "CLIO" and m.recipient == "HUMAN" and m.intent == Intent.FINAL_REPORT.value
 
         steps = 0
         while steps < max_steps:
@@ -43,6 +54,18 @@ class Orchestrator:
 
                 self.logger.log({"type": "message_routed", "message": asdict(msg)})
 
+                try:
+                    validate_intent(msg)
+                except ProtocolViolation as exc:
+                    self.logger.log({
+                        "type": "protocol_violation",
+                        "message": asdict(msg),
+                        "error": str(exc),
+                    })
+                    if self.strict_protocol:
+                        raise
+                    continue
+
                 # Deliver message to its recipient
                 agent = self.registry.get(msg.recipient)
                 out = agent.handle(msg)
@@ -61,7 +84,7 @@ class Orchestrator:
                 for out_msg in out:
                     # Nemesis gate rule (hard-coded v0):
                     # Any artifact produced by HEPH must be evaluated by NEM before reaching CLIO.
-                    if out_msg.sender == "HEPH" and out_msg.intent in ("ARTIFACT_BUILT", "ARTIFACT"):
+                    if out_msg.sender == "HEPH" and out_msg.intent in (Intent.ARTIFACT_BUILT.value, "ARTIFACT"):
                         if out_msg.recipient != "NEM":
                             out_msg = Message(
                                 sender=out_msg.sender,
@@ -88,4 +111,3 @@ class Orchestrator:
                     self.bus.send(out_msg)
 
         self.logger.log({"type": "orchestrator_stopped", "steps": steps})
-

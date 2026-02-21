@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List
 from ..models import Message
+from ..protocol.intent import Intent
 
 class HermAgent:
     """Herm interprets human goals and produces a structured goal."""
@@ -20,7 +21,7 @@ class HermAgent:
             sender=self.name,
             recipient="DAED",
             task_id=msg.task_id,
-            intent="STRUCTURED_GOAL",
+            intent=Intent.STRUCTURED_GOAL.value,
             content=structured,
             goal_reference=msg.goal_reference,
             urgency=msg.urgency,

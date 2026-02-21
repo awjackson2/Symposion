@@ -29,7 +29,17 @@
     },
     "intent": {
       "type": "string",
-      "minLength": 1
+      "enum": [
+        "NEW_GOAL",
+        "STRUCTURED_GOAL",
+        "RESEARCH_REQUEST",
+        "CONTEXT_BRIEF",
+        "BUILD_TASK",
+        "ARTIFACT_BUILT",
+        "REVISION_REQUEST",
+        "APPROVED_OUTPUT",
+        "FINAL_REPORT"
+      ]
     },
     "content": {
       "type": "string"
