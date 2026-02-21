@@ -180,5 +180,6 @@ To add a new intent:
 
 ## See Also
 
-- [Architecture Overview (parent page)](architecture.md)
-- [Message Schema](../schemas/message.schema.json)
+- **Parent:** [Architecture](./architecture.md)
+- **Sibling:** [Action Pipelines](./action-pipelines.md)
+- **Reference:** [Message Schema](../schemas/message.schema.json)
